@@ -24,6 +24,35 @@ General instance information:
         *   -   ``tnt_read_only``
             -   Indicates if the instance is in read-only mode (``1`` if true, ``0`` if false)
 
+Failover metrics
+----------------
+
+The ``failover`` group provides metrics reported by a Tarantool Enterprise
+failover coordinator: whether the coordinator is active and whether each
+monitored instance is alive.
+Collection works before ``box.cfg()``.
+
+* ``tarantool_coordinator_active`` (gauge): ``1`` when the coordinator owns
+  the lock, otherwise ``0``.
+* ``tarantool_instance_status`` (gauge): ``1`` for an ``alive`` instance,
+  otherwise ``0``, with ``replicaset`` and ``instance`` labels. Passive
+  coordinators also report instance status.
+
+The default ``alias`` label identifies the coordinator. An explicit global
+alias overrides the default; shared alias overrides can make coordinators
+indistinguishable.
+Global labels cannot override the collector's ``replicaset`` and ``instance``.
+
+Enable the group through
+``metrics.cfg{include = {'info', 'failover'}, exclude = {}, labels = labels}``.
+Uptime remains in ``info``. Removed instances, moved instances, and removed
+replicasets lose their old observations on the next collection.
+For a monitored instance, ``tarantool_instance_status`` is ``1`` when its
+status is ``alive`` and ``0`` otherwise, including when its status is
+unknown. When an instance is no longer monitored, its metric is omitted
+from the next collection.
+Disabling the group removes its exported observations.
+
 ..  _metrics-reference-schema:
 
 Schema
