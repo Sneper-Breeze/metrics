@@ -19,7 +19,8 @@ General instance information:
         *   -   ``tnt_cfg_current_time``
             -   Instance system time in the Unix timestamp format
         *   -   ``tnt_info_uptime``
-            -   Time in seconds since the instance has started
+            -   Time in seconds since the instance has started. Available in the
+                ``info`` group even before ``box.cfg()``.
         *   -   ``tnt_read_only``
             -   Indicates if the instance is in read-only mode (``1`` if true, ``0`` if false)
 
@@ -1071,4 +1072,3 @@ These metrics are available starting from Tarantool 3.0.
 
                 For example, this set of metrics means that current configuration
                 for ``router-001-a`` status is ``ready``.
-                
